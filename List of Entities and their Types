@@ -1,0 +1,59 @@
+For Reference if help is needed with Entity-Relationship Model
+
+ERD – 23 total
+Tables: 32 fields that are part of the primary keys, 29 fields that are part of the foreign keys
+
+Employees (EmployeeID, Address, Phone, Email, FirstName, LastName, HourlyWage, Salary, MiddleNameInitial, SocialSecurityNum) – [Int, char, varchar, varchar, char, char, varchar, int, float, varchar, varchar]
+
+EmployeeSkillLevel (SkillLevelID, SkillLevel, PaymentRate) – [int, varchar, float]
+
+BillingRates (InsuranceCompanyID, BillingRate) – [int, float]
+
+Patients (PatientID, FirstName, LastName, Address, Address2, CellNumber, PhoneNumber, Zipcode, SocialSecurityNum) – [int, char, char, varchar, varchar, varchar, varchar, varchar, varchar]
+
+Services (ServiceID, ServiceType, CostRate, SkillLevelNumber, ServiceDate) – [int, varchar, float, varchar, date]
+
+Payment (PaymentTypeID, PaymentType) – [int, varchar]
+
+InsuranceCompanies (CompanyID, CompanyName, Zipcode, Address, Email, PhoneNumber) – [int, varchar, varchar, varchar, varchar, varchar]
+
+Inventory (InventoryTypeID, InventoryType, CostRate, Quantity) – [int, varchar, float, int] WEAK ENTITY
+
+Labor (LaborID, EmployeeNumber, LaborCost) – [int, int, int]
+
+Contracts (ContractID, PaymentType, InsuranceCompanyID, StartDate, EndDate) – [int, float, int, date, date]
+
+EmployeeTypes (EmpTypeID, EmployeeType) – [int, varchar]
+
+EmployeeRanks (EmpRankID) – [int]
+
+EmpShifts (ShiftID, ShiftName, StartTime, EndTime) – [int, varchar, varchar, varchar]
+
+ZipCodes (ZipCode, States, City) – [varchar (10), varchar (2), varchar (30)]
+
+Physicians (PhysicianID, Email, SpecialtyID, FirstName, LastName) – [int, varchar, int, varchar, varchar]
+
+PhysicianSpecialty (SpecialtyID, SpecialtyName) – [int, varchar]
+
+PhysicianPractices (PracticeID, PracticeName, Address, Address2, Zipcode, Fax, PhoneNumber) – [int, char, varchar, varchar, varchar, varchar]
+
+Visits (VisitID, StartDate, EndDate, DateVisted) - [int, date, date, date]
+
+DaysOfWeek (DayOfWeekID, WeekDay) - [int, varchar]
+
+Availability (WeekOf) – [date] WEAK ENTITY [has relationship with DaysOfWeek and Shifts, has relationship with Employees]
+
+Frequencies (FrequencyID, Frequency) – [int, varchar]
+
+Referrals (ReferralID, StartDate, EndDate) – [int, date, date]
+
+ReferralServices () WEAK ENTITY
+
+Supplies (SupplyID, SupplyDescription) – [int, varchar]
+
+VisitDetails (VisitDetailsID, SupplyQuantity, Charge) – [int, int, float] WEAK ENTITY
+
+EmployeeTitles (EmployeeTitleID, EmployeeTitle) – [int, varchar]
+
+MedicalSupplier (SupplierID, SupplierName, Email, Address, Address2, Zipcode, PhoneNumber, Fax) – [int, varchar, varchar, varchar, varchar, varchar (10), varchar, varchar]
+
