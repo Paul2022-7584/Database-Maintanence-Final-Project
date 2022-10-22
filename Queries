@@ -1,0 +1,371 @@
+ZipCodes:
+create table ZipCodes
+(ZipCode varchar(10) NOT NULL,
+States varchar(2),
+City varchar(30),
+Constraint pk_zipcodes primary key(ZipCode))
+select * from ZipCodes
+exec sp_help ZipCodes
+
+
+
+Payment:
+create table Payment
+(PaymentTypeID int,
+PaymentType varchar (30),
+Constraint pk_Payment primary key (PaymentTypeID))
+Select * from Payment
+Exec sp_help Payment
+
+
+Frequencies:
+Create table Frequencies
+(FrequencyID int NOT NULL,
+Frequency varchar (30),
+Constraint pk_FrequencyID primary key (FrequencyID))
+Select * from Frequencies
+Exec sp_help Frequencies
+ 
+
+
+PhysicianPractices:
+Create table PhysicianPractices
+(PracticeID int,
+PracticeName varchar (30),
+Address varchar (30),
+Address2 varchar (30),
+Fax varchar (11),
+PhoneNumber varchar (15),
+Zipcode4 varchar (10),
+ZipCode varchar (10) NOT NULL,
+Constraint pk_PhysicianPractice primary key (PracticeID),
+Constraint fk_PhysicianPractice_ZipCodes foreign key (ZipCode) references ZipCodes)
+Select * from PhysicianPractices
+Exec sp_help PhysicianPractices
+ 
+
+InsuranceCompanies:
+Create table InsuranceCompanies
+(CompanyID int,
+CompanyName varchar (30),
+Zipcode3 varchar (10),
+Address varchar (50),
+Email varchar (25),
+PhoneNumber varchar (15),
+ZipCode varchar (10) NOT NULL,
+Constraint pk_InsuranceCompanies primary key (CompanyID),
+Constraint fk_InsuranceCompanies_ZipCodes foreign key (ZipCode) references ZipCodes)
+Select * from InsuranceCompanies
+Exec sp_help InsuranceCompanies
+
+
+
+Services:
+Create table Services
+(ServiceID int NOT NULL, 
+ServiceType varchar (30),
+CostRate float,
+SkillLevelNumber varchar (10),
+ServiceDate date,
+Constraint pk_services primary key (ServiceID))
+Select * from services
+Exec sp_help services
+
+
+
+Contracts:
+create table Contracts
+(ContractID int NOT NULL,
+StartDate date,
+EndDate date,
+PaymentType varchar (30),
+CompanyID int,
+PaymentTypeID int,
+ReferralID int,
+constraint pk_contracts primary key (ContractID),
+constraint fk_contracts_payment foreign key (PaymentTypeID) references Payment,
+constraint fk_contracts_insuranceCompanies foreign key (CompanyID) references InsuranceCompanies,
+constraint fk_contracts_referrals foreign key (ReferralID) references Referrals)
+
+select * from Contracts
+exec sp_help Contracts
+
+
+
+VisitDetails:
+create table VisitDetails
+(VisitDetailsID int,
+SupplyQuantity int,
+Charge int,
+ServiceID int NOT NULL,
+constraint pk_visitDetails primary key (VisitDetailsID, ServiceID),
+constraint fk_visitDetails_services foreign key (ServiceID) references Services)
+
+select * from VisitDetails
+exec sp_help VisitDetails
+
+
+
+Supplies:
+Create table Supplies
+(SupplyID int, 
+SupplyDescription varchar (80),
+VisitDetailsID int,
+ServiceID int NOT NULL,
+Constraint pk_supplies primary key (SupplyID),
+Constraint fk_Supplies_VisitDetails foreign key (VisitDetailsID, ServiceID) references VisitDetails)
+Select * from Supplies
+Exec sp_help Supplies
+ 
+
+
+Referrals:
+Create table Referrals
+(ReferralID int,
+StartDate date,
+EndDate date,
+PhysicianID int,
+PatientID int,
+Constraint pk_referrals primary key (ReferralID),
+Constraint fk_referrals_physicians foreign key (PhysicianID) references Physicians,
+Constraint fk_referrals_patients foreign key (PatientID) references Patients)
+Select * from Referrals
+Exec sp_help Referrals
+
+
+
+Physicians:
+Create table Physicians
+(PhysicianID int,
+Email varchar (25),
+FirstName varchar (20),
+LastName varchar (30),
+SpecialtyID int,
+PracticeID int,
+Constraint pk_Physicians primary key (PhysicianID),
+Constraint fk_Physicians_PhysicianSpecial foreign key (SpecialtyID) references PhysicianSpecialty,
+Constraint fk_Physicians_PhysiciansPractices foreign key (PracticeID) references PhysicianPractices)
+select * from Physicians
+exec sp_help Physicians
+
+
+PhysicianSpecialty:
+Create table PhysicianSpecialty
+(SpecialtyID int,
+SpecialtyName varchar (35),
+Constraint pk_PhysicianSpecialty primary key (SpecialtyID))
+select * from PhysicianSpecialty
+exec sp_help PhysicianSpecialty
+
+
+
+ReferralServices:
+create table ReferralServices
+(FrequencyID int,
+ReferralID int,
+ServiceID int,
+constraint pk_ReferralServices primary key (FrequencyID, ReferralID, ServiceID))
+select * from ReferralServices
+exec sp_help ReferralServices
+
+
+
+Labor:
+Create table Labor
+(LaborID int,
+LaborEmployee varchar (30),
+LaborCost int,
+Constraint pk_Labor primary key (LaborID))
+Select * from Labor
+Exec sp_help Labor
+ 
+
+
+
+
+Employees:
+
+Create table Employees
+(EmployeeID int NOT NULL,
+Address varchar(50),
+Phone varchar (15),
+Email varchar (25),
+FirstName varchar(20),
+LastName varchar(30),
+HourlyWage int,
+Salary float,
+MiddleNameInitial varchar (2),
+SocialSecurityNum varchar (15),
+LaborID int NOT NULL,
+ZipCode varchar(10) NOT NULL,
+EmpRankID int NOT NULL,
+Constraint pk_employeeID primary key (EmployeeID),
+Constraint fk_Employees_ZipCodes foreign key (ZipCode) references ZipCodes,
+Constraint fk_Employees_Labor foreign key (LaborID) references Labor,
+Constraint fk_Employees_EmployeeRanks foreign key (EmpRankID) references EmployeeRanks)
+Select * from Employees
+Exec sp_help Employees
+ 
+
+
+Patients:
+Create table Patients
+(PatientID int,
+FirstName varchar (20),
+LastName varchar (30),
+Address varchar (50),
+Address2 varchar (50),
+PhoneNumber varchar (15),
+Zipcode varchar (10),
+SocialSecurityNum varchar (15),
+CellNumber varchar (15),
+Constraint pk_patients primary key (PatientID))
+Select * from Patients
+Exec sp_help Patients
+
+
+
+Visits:
+Create table Visits
+(VisitID int,
+StartDate date,
+EndDate date,
+DateVisited date,
+PatientID int,
+EmployeeID int,
+Constraint pk_Visits primary key (VisitID),
+Constraint fk_Visits_Patients foreign key (PatientID) references Patients,
+Constraint fk_visits_Employee foreign key (EmployeeID) references Employees)
+Select * from Visits
+Exec sp_help Visits
+ 
+
+
+MedicalSupplier:
+Create table MedicalSupplier
+(SupplierID int,
+SupplierName varchar(30),
+Email varchar (30),
+Address varchar (50),
+Address2 varchar (50),
+Zipcode2 varchar(10),
+PhoneNumber varchar (15),
+Fax varchar (15),
+ZipCode varchar(10) NOT NULL,
+Constraint pk_MedicalSupplier primary key (SupplierID),
+Constraint fk_MedicalSupplier_ZipCodes foreign key (ZipCode) references ZipCodes)
+
+Select * from MedicalSupplier
+Exec sp_help MedicalSupplier
+
+
+
+Inventory:
+Create table Inventory
+(InventoryTypeID int,
+SupplyID int,
+SupplierID int,
+InventoryType varchar (30),
+CostRate float,
+Quantity int,
+Constraint pk_inventory primary key (InventoryTypeID, SupplierID, SupplyID),
+Constraint fk_inventory_supplies foreign key (SupplyID) references Supplies,
+Constraint fk_inventory_medicalsupplier foreign key (SupplierID) references MedicalSupplier)
+Select * from inventory
+Exec sp_help inventory
+ 
+
+
+EmployeeTitles:
+Create table EmployeeTitles
+(EmployeeTitleID int,
+EmployeeTitle varchar (35),
+Constraint pk_EmployeeTitles primary key (EmployeeTitleID))
+Select * from EmployeeTitles
+Exec sp_help EmployeeTitles
+
+
+EmployeeTypes:
+Create table EmployeeTypes
+(EmpTypeID int,
+EmployeeType varchar (35),
+Constraint pk_EmployeeTypes primary key (EmpTypeID))
+Select * from EmployeeTypes
+Exec sp_help EmployeeTypes
+
+EmployeeSkillLevel:
+Create table EmployeeSkillLevel
+(SkillLevelID int,
+SkillLevel varchar (10),
+PaymentRate float,
+Constraint pk_EmployeeSkillLevel primary key (SkillLevelID))
+Select * from EmployeeSkillLevel
+Exec sp_help EmployeeSkillLevel
+
+
+BillingRates:
+Create table BillingRates
+(InsuranceCompanyID int,
+BillingRates float,
+EmpTypeID int,
+SkillLevelID int,
+Constraint pk_BillingRates primary key (InsuranceCompanyID),
+Constraint fk_BillingRates_EmployeeTypes foreign key (EmpTypeID) references EmployeeTypes,
+Constraint fk_BillingRates_EmployeeSkillLevel foreign key (SkillLevelID) references EmployeeSkillLevel)
+Select * from BillingRates
+Exec sp_help BillingRates
+
+
+
+EmployeeRanks:
+Create table EmployeeRanks
+(EmpRankID int NOT NULL,
+EmpTypeID int,
+EmployeeTitleID int,
+SkillLevelID int,
+Constraint pk_EmployeeRanks primary key (EmpRankID),
+Constraint fk_EmployeeRanks_EmployeeTitles foreign key (EmployeeTitleID) references EmployeeTitles,
+Constraint fk_EmployeeRanks_EmployeeTypes foreign key (EmpTypeID) references EmployeeTypes,
+Constraint fk_EmployeeRanks_EmployeeSkillLevel foreign key (SkillLevelID) references EmployeeSkillLevel)
+Select * from EmployeeRanks
+Exec sp_help EmployeeRanks
+ 
+
+
+
+EmpShifts:
+Create table EmpShifts
+(ShiftID int NOT NULL,
+ShiftName varchar (30),
+StartTime varchar (25),
+EndTime varchar (25),
+Constraint pk_EmpShifts primary key (ShiftID))
+Select * from EmpShifts
+Exec sp_help EmpShifts
+
+
+
+
+DaysOfWeek:
+Create table DaysOfWeek
+(DayOfWeekID int NOT NULL,
+WeekDay varchar (10),
+Constraint pk_DaysOfWeek primary key (DayOfWeekID))
+Select * from DaysOfWeek
+Exec sp_help DaysOfWeek
+
+
+
+
+Availability:
+Create table Availability
+(WeekOf date,
+DayOfWeekID int NOT NULL,
+ShiftID int NOT NULL,
+EmployeeID int NOT NULL,
+Constraint pk_Availability primary key (WeekOf, DayOfWeekID, EmployeeID, ShiftID),
+Constraint fk_Availability_DaysOfWeek foreign key (DayOfWeekID) references DaysOfWeek,
+Constraint fk_Availability_EmpShifts foreign key (ShiftID) references EmpShifts,
+Constraint fk_Availability_Employees foreign key (EmployeeID) references Employees)
+Select * from Availability
+Exec sp_help Availability
