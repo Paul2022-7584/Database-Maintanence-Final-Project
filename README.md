@@ -1,4 +1,4 @@
-# Database-Maintanence-HCO-Project-Instructions
+# Database-Maintanence-HCO-Project-Instructions PART I
 
 1.  ERD
 For this phase, assume you are a member of a team of database and Graphical User Interface (GUI) developers/analysts. As a member of the database team, you are required to create an ER Diagram that will facilitate the development of Health Care Options’ company-wide database (see the Heath Care Options, Inc. document in the Resources section for details on the company). It should be created using Entity-Relationship (ER) Assistant and include entities, attributes, and relationships.
